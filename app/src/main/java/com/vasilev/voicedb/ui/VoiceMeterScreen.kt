@@ -11,6 +11,7 @@ import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxWithConstraints
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -24,8 +25,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
@@ -44,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalView
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -99,79 +103,143 @@ fun VoiceMeterScreen(
         )
     }
 
-    Column(
+    BoxWithConstraints(
         modifier = Modifier
             .fillMaxSize()
             .background(BgDeep)
             .systemBarsPadding()
-            .padding(horizontal = 16.dp, vertical = 12.dp),
-        verticalArrangement = Arrangement.spacedBy(12.dp)
+            .padding(horizontal = 16.dp, vertical = 12.dp)
     ) {
-        TopStatusBar(
-            uiState = uiState,
-            onOpenCalibration = { showCalibrationDialog = true }
-        )
+        val isLandscapeCompact = maxWidth > maxHeight && maxHeight < 560.dp
 
-        if (!uiState.hasMicPermission) {
-            Box(
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth(),
-                contentAlignment = Alignment.Center
-            ) {
-                PermissionCard(
-                    showOpenSettingsAction = showOpenSettingsAction,
-                    onRequestPermission = onRequestPermission,
-                    onOpenSettings = onOpenSettings
-                )
-            }
-        } else {
-            HeroDecibelCard(
-                currentDb = uiState.currentDb,
-                isListening = uiState.isListening,
-                voiceLevel = uiState.voiceLevel
+        Column(
+            modifier = Modifier.fillMaxSize(),
+            verticalArrangement = Arrangement.spacedBy(12.dp)
+        ) {
+            TopStatusBar(
+                uiState = uiState,
+                onOpenCalibration = { showCalibrationDialog = true }
             )
 
-            if (uiState.micError) {
-                Surface(
-                    modifier = Modifier.fillMaxWidth(),
-                    shape = RoundedCornerShape(14.dp),
-                    color = AccentRed.copy(alpha = 0.14f),
-                    border = BorderStroke(1.dp, AccentRed.copy(alpha = 0.45f))
+            if (!uiState.hasMicPermission) {
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .verticalScroll(rememberScrollState()),
+                    contentAlignment = Alignment.Center
                 ) {
-                    Text(
-                        text = stringResource(R.string.error_mic_unavailable),
-                        color = TextPrimary,
-                        fontSize = 13.sp,
-                        modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp)
+                    PermissionCard(
+                        showOpenSettingsAction = showOpenSettingsAction,
+                        onRequestPermission = onRequestPermission,
+                        onOpenSettings = onOpenSettings
                     )
                 }
+            } else if (isLandscapeCompact) {
+                Row(
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(12.dp)
+                ) {
+                    Column(
+                        modifier = Modifier
+                            .weight(0.44f)
+                            .fillMaxHeight()
+                            .verticalScroll(rememberScrollState()),
+                        verticalArrangement = Arrangement.spacedBy(10.dp)
+                    ) {
+                        HeroDecibelCard(
+                            currentDb = uiState.currentDb,
+                            isListening = uiState.isListening,
+                            voiceLevel = uiState.voiceLevel,
+                            compact = true
+                        )
+
+                        if (uiState.micError) {
+                            MicErrorBanner()
+                        }
+
+                        StatsRow(
+                            minDb = uiState.minDb,
+                            avgDb = uiState.avgDb,
+                            maxDb = uiState.maxDb
+                        )
+
+                        ControlsRow(
+                            isListening = uiState.isListening,
+                            hasHistory = uiState.history.isNotEmpty() || uiState.maxDb != null,
+                            compact = true,
+                            onToggleListening = onToggleListening,
+                            onResetStats = onResetStats
+                        )
+                    }
+
+                    DecibelGraph(
+                        history = uiState.history,
+                        maxHistorySize = uiState.maxHistorySize,
+                        maxDb = uiState.maxDb,
+                        isListening = uiState.isListening,
+                        modifier = Modifier
+                            .weight(0.56f)
+                            .fillMaxHeight()
+                    )
+                }
+            } else {
+                HeroDecibelCard(
+                    currentDb = uiState.currentDb,
+                    isListening = uiState.isListening,
+                    voiceLevel = uiState.voiceLevel,
+                    compact = false
+                )
+
+                if (uiState.micError) {
+                    MicErrorBanner()
+                }
+
+                DecibelGraph(
+                    history = uiState.history,
+                    maxHistorySize = uiState.maxHistorySize,
+                    maxDb = uiState.maxDb,
+                    isListening = uiState.isListening,
+                    modifier = Modifier
+                        .weight(1f)
+                        .fillMaxWidth()
+                        .heightIn(min = 180.dp)
+                )
+
+                StatsRow(
+                    minDb = uiState.minDb,
+                    avgDb = uiState.avgDb,
+                    maxDb = uiState.maxDb
+                )
+
+                ControlsRow(
+                    isListening = uiState.isListening,
+                    hasHistory = uiState.history.isNotEmpty() || uiState.maxDb != null,
+                    compact = false,
+                    onToggleListening = onToggleListening,
+                    onResetStats = onResetStats
+                )
             }
-
-            DecibelGraph(
-                history = uiState.history,
-                maxHistorySize = uiState.maxHistorySize,
-                maxDb = uiState.maxDb,
-                isListening = uiState.isListening,
-                modifier = Modifier
-                    .weight(1f)
-                    .fillMaxWidth()
-                    .heightIn(min = 200.dp)
-            )
-
-            StatsRow(
-                minDb = uiState.minDb,
-                avgDb = uiState.avgDb,
-                maxDb = uiState.maxDb
-            )
-
-            ControlsRow(
-                isListening = uiState.isListening,
-                hasHistory = uiState.history.isNotEmpty() || uiState.maxDb != null,
-                onToggleListening = onToggleListening,
-                onResetStats = onResetStats
-            )
         }
+    }
+}
+
+@Composable
+private fun MicErrorBanner() {
+    Surface(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(14.dp),
+        color = AccentRed.copy(alpha = 0.14f),
+        border = BorderStroke(1.dp, AccentRed.copy(alpha = 0.45f))
+    ) {
+        Text(
+            text = stringResource(R.string.error_mic_unavailable),
+            color = TextPrimary,
+            fontSize = 13.sp,
+            modifier = Modifier.padding(horizontal = 14.dp, vertical = 10.dp)
+        )
     }
 }
 
@@ -274,7 +342,8 @@ private fun TopStatusBar(
 private fun HeroDecibelCard(
     currentDb: Float,
     isListening: Boolean,
-    voiceLevel: VoiceLevel
+    voiceLevel: VoiceLevel,
+    compact: Boolean
 ) {
     val targetColor = if (isListening || currentDb > 0f) colorForDb(currentDb) else TextSecondary
     val accentColor by animateColorAsState(
@@ -306,7 +375,7 @@ private fun HeroDecibelCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 20.dp, vertical = 16.dp),
+                .padding(horizontal = 18.dp, vertical = if (compact) 12.dp else 16.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
@@ -317,7 +386,7 @@ private fun HeroDecibelCard(
                     text = String.format(Locale.getDefault(), "%.1f", currentDb),
                     style = TextStyle(
                         color = accentColor,
-                        fontSize = 54.sp,
+                        fontSize = if (compact) 42.sp else 54.sp,
                         fontWeight = FontWeight.Bold,
                         fontFeatureSettings = "tnum"
                     )
@@ -326,13 +395,13 @@ private fun HeroDecibelCard(
                 Text(
                     text = stringResource(R.string.unit_db),
                     color = TextSecondary,
-                    fontSize = 20.sp,
+                    fontSize = if (compact) 17.sp else 20.sp,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(bottom = 10.dp)
+                    modifier = Modifier.padding(bottom = if (compact) 7.dp else 10.dp)
                 )
             }
 
-            Spacer(modifier = Modifier.height(6.dp))
+            Spacer(modifier = Modifier.height(if (compact) 4.dp else 6.dp))
 
             Surface(
                 shape = RoundedCornerShape(999.dp),
@@ -342,13 +411,13 @@ private fun HeroDecibelCard(
                 Text(
                     text = levelLabel,
                     color = accentColor,
-                    fontSize = 13.sp,
+                    fontSize = if (compact) 12.sp else 13.sp,
                     fontWeight = FontWeight.SemiBold,
-                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 5.dp)
+                    modifier = Modifier.padding(horizontal = 14.dp, vertical = 4.dp)
                 )
             }
 
-            Spacer(modifier = Modifier.height(14.dp))
+            Spacer(modifier = Modifier.height(if (compact) 10.dp else 14.dp))
 
             Box(
                 modifier = Modifier
@@ -413,7 +482,7 @@ private fun StatsRow(
 private fun StatCard(
     label: String,
     value: Float?,
-    accent: androidx.compose.ui.graphics.Color,
+    accent: Color,
     modifier: Modifier = Modifier
 ) {
     val emptyText = stringResource(R.string.stat_empty)
@@ -431,7 +500,7 @@ private fun StatCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = 12.dp, vertical = 10.dp),
+                .padding(horizontal = 10.dp, vertical = 10.dp),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Text(
@@ -445,10 +514,11 @@ private fun StatCard(
                 text = formatted,
                 style = TextStyle(
                     color = if (value != null) accent else TextMuted,
-                    fontSize = 15.sp,
+                    fontSize = 14.sp,
                     fontWeight = FontWeight.Bold,
                     fontFeatureSettings = "tnum"
-                )
+                ),
+                maxLines = 1
             )
         }
     }
@@ -458,9 +528,12 @@ private fun StatCard(
 private fun ControlsRow(
     isListening: Boolean,
     hasHistory: Boolean,
+    compact: Boolean,
     onToggleListening: () -> Unit,
     onResetStats: () -> Unit
 ) {
+    val buttonHeight = if (compact) 48.dp else 54.dp
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(10.dp),
@@ -470,14 +543,14 @@ private fun ControlsRow(
             onClick = onToggleListening,
             modifier = Modifier
                 .weight(1f)
-                .height(54.dp),
+                .height(buttonHeight),
             shape = RoundedCornerShape(16.dp),
             colors = ButtonDefaults.buttonColors(
                 containerColor = if (isListening) SurfaceElevated else AccentGreen,
                 contentColor = if (isListening) TextPrimary else BgDeep
             ),
             border = if (isListening) BorderStroke(1.dp, BorderSubtle) else null,
-            contentPadding = PaddingValues(horizontal = 20.dp)
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             Icon(
                 painter = painterResource(
@@ -491,7 +564,7 @@ private fun ControlsRow(
                 text = stringResource(
                     if (isListening) R.string.action_pause else R.string.action_start
                 ),
-                fontSize = 16.sp,
+                fontSize = 15.sp,
                 fontWeight = FontWeight.SemiBold
             )
         }
@@ -499,7 +572,7 @@ private fun ControlsRow(
         OutlinedButton(
             onClick = onResetStats,
             enabled = hasHistory,
-            modifier = Modifier.height(54.dp),
+            modifier = Modifier.height(buttonHeight),
             shape = RoundedCornerShape(16.dp),
             border = BorderStroke(
                 width = 1.dp,
@@ -509,7 +582,7 @@ private fun ControlsRow(
                 contentColor = TextPrimary,
                 disabledContentColor = TextMuted
             ),
-            contentPadding = PaddingValues(horizontal = 18.dp)
+            contentPadding = PaddingValues(horizontal = 16.dp)
         ) {
             Icon(
                 painter = painterResource(R.drawable.ic_reset),
