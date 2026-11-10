@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Громкость голоса</string>
+    <string name="unit_db">дБ</string>
+    <string name="unit_sec">с</string>
+    <string name="status_listening">Слушаю микрофон</string>
+    <string name="status_paused">На паузе</string>
+    <string name="status_no_permission">Нет доступа к микрофону</string>
+
+    <string name="level_silence">Тишина</string>
+    <string name="level_quiet">Шёпот / Тихо</string>
+    <string name="level_normal">Обычная речь</string>
+    <string name="level_loud">Громкий голос</string>
+    <string name="level_very_loud">Очень громко</string>
+
+    <string name="stat_min">Мин</string>
+    <string name="stat_avg">Сред</string>
+    <string name="stat_max">Макс</string>
+    <string name="stat_empty">—</string>
+
+    <string name="graph_title">График громкости</string>
+    <string name="graph_now">Сейчас</string>
+    <string name="graph_max_line">Макс %1$.0f дБ</string>
+    <string name="graph_waiting">Говорите в микрофон…</string>
+
+    <string name="action_pause">Пауза</string>
+    <string name="action_start">Включить</string>
+    <string name="action_reset">Сброс</string>
+    <string name="action_calibrate">Калибровка</string>
+
+    <string name="permission_title">Нужен доступ к микрофону</string>
+    <string name="permission_description">Чтобы измерять громкость голоса в децибелах и строить график в реальном времени, разрешите доступ к микрофону. Аудио никуда не записывается и не передаётся.</string>
+    <string name="permission_grant">Разрешить микрофон</string>
+    <string name="permission_settings">Открыть настройки</string>
+
+    <string name="calibration_title">Калибровка микрофона</string>
+    <string name="calibration_subtitle">Сдвиг чувствительности в децибелах (если микрофон завышает или занижает показания относительно эталона).</string>
+    <string name="calibration_offset_value">%1$+d дБ</string>
+    <string name="calibration_reset">Сбросить (0 дБ)</string>
+    <string name="calibration_done">Готово</string>
+
+    <string name="error_mic_unavailable">Не удалось запустить микрофон. Проверьте, не занят ли он другим приложением.</string>
+</resources>
