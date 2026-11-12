@@ -208,6 +208,15 @@ Gradle 9 всё равно несовместим с AGP 8.3.
      `Local installation`) → `C:\Gradle\gradle-8.7`.
 3. **File → Sync Project with Gradle Files**.
 
+Две частые ошибки в этом же окне:
+
+- **Gradle user home** — это папка кэша (`C:\Users\<вы>\.gradle`), а не папка с
+  Gradle. Путь к распакованному `gradle-8.7` туда вписывать нельзя, его нужно
+  указывать в поле **Gradle distribution / Local installation**.
+- **Gradle JDK** должен быть **17**. Если в списке выбран JetBrains Runtime
+  версии новее (21, 25 и т.п.), AGP 8.3 и Gradle 8.7 не запустятся —
+  используйте **Download JDK… → версия 17** или установленный JDK 17.
+
 Альтернатива без установки Gradle — wrapper 8.7. Быстрый способ (из корня
 проекта):
 
