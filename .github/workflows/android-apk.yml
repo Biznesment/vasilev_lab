@@ -5,6 +5,7 @@ on:
   push:
     branches:
       - main
+      - arena/55c102ca-vasilev-lab
 
 jobs:
   build:
