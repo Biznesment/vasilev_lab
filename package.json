@@ -9,7 +9,8 @@
     "preview": "vite preview --host 0.0.0.0",
     "cordova:prepare": "npm run build && cordova prepare",
     "cordova:android": "npm run build && cordova build android",
-    "cordova:apk": "npm run build && cordova build android --release -- --packageType=apk"
+    "cordova:apk": "npm run build && cordova build android --release -- --packageType=apk",
+    "android:fix-gradle": "node scripts/fix-android-gradle.js"
   },
   "dependencies": {
     "onsenui": "2.12.9",

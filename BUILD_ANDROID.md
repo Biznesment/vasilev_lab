@@ -208,8 +208,18 @@ Gradle 9 всё равно несовместим с AGP 8.3.
      `Local installation`) → `C:\Gradle\gradle-8.7`.
 3. **File → Sync Project with Gradle Files**.
 
-Альтернатива без установки Gradle — wrapper 8.7. Создайте файл
-`platforms/android/gradle/wrapper/gradle-wrapper.properties`:
+Альтернатива без установки Gradle — wrapper 8.7. Быстрый способ (из корня
+проекта):
+
+```bash
+npm run android:fix-gradle
+```
+
+Скрипт создаст `platforms/android/gradle/wrapper/gradle-wrapper.properties` с
+Gradle 8.7. После этого в настройках Gradle выберите **Use Gradle from →
+gradle-wrapper.properties file** и сделайте Sync.
+
+Если нужно создать файл вручную, его содержимое:
 
 ```properties
 distributionBase=GRADLE_USER_HOME
