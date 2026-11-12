@@ -1,0 +1,27 @@
+# зависимости
+node_modules/
+
+# Cordova: платформы и плагины генерируются заново из config.xml
+platforms/
+plugins/
+!plugins/.gitkeep
+
+# сборки Android
+*.apk
+*.aab
+build/
+.gradle/
+local.properties
+.gradle-cache/
+
+# готовая веб-сборка (committed намеренно, чтобы APK собирался без npm build)
+# www/
+
+# служебные файлы
+.DS_Store
+*.log
+.vite/
+
+# сгенерированные артефакты, которые не нужны в репозитории
+*.jks
+*.keystore
