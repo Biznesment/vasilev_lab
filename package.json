@@ -1,0 +1,44 @@
+{
+  "name": "vasilev-lab",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Cordova + React + Onsen UI demo app: message carousel, device info, geolocation, battery status",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "preview": "vite preview --host 0.0.0.0",
+    "cordova:prepare": "npm run build && cordova prepare",
+    "cordova:android": "npm run build && cordova build android",
+    "cordova:apk": "npm run build && cordova build android --release -- --packageType=apk",
+    "android:fix-gradle": "node scripts/fix-android-gradle.js"
+  },
+  "dependencies": {
+    "onsenui": "2.12.9",
+    "react": "18.3.1",
+    "react-dom": "18.3.1",
+    "react-onsenui": "1.13.3"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "4.3.4",
+    "cordova": "12.0.0",
+    "cordova-android": "13.0.0",
+    "cordova-plugin-battery-status": "^2.0.3",
+    "cordova-plugin-device": "^3.0.0",
+    "cordova-plugin-geolocation": "^5.0.0",
+    "cordova-plugin-network-information": "^3.1.0",
+    "vite": "5.4.11"
+  },
+  "cordova": {
+    "platforms": [
+      "android"
+    ],
+    "plugins": {
+      "cordova-plugin-device": {},
+      "cordova-plugin-geolocation": {
+        "GPS_REQUIRED": "false"
+      },
+      "cordova-plugin-battery-status": {},
+      "cordova-plugin-network-information": {}
+    }
+  }
+}
