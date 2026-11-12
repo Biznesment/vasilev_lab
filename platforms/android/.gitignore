@@ -3,7 +3,10 @@ build.xml
 local.properties
 /gradlew
 /gradlew.bat
-/gradle
+/gradle/*
+!/gradle/wrapper/
+/gradle/wrapper/*
+!/gradle/wrapper/gradle-wrapper.properties
 # Ant builds
 ant-build
 ant-gen
