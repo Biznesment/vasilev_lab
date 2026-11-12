@@ -1,5 +1,5 @@
 'use strict';
-const VERSION = 'v2';
+const VERSION = 'v3';
 const APP_CACHE = `mesto-app-${VERSION}`;
 const API_CACHE = `mesto-api-${VERSION}`;
 const IMAGE_CACHE = `mesto-emoji-images-${VERSION}`;

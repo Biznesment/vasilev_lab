@@ -16,7 +16,7 @@
   <header class="topbar">
     <button id="menu-open" class="menu-button" aria-label="Открыть меню" aria-expanded="false" aria-controls="drawer">☰</button>
     <a class="brand" href="#home">Место</a>
-    <button id="install" class="install-button" hidden>INSTALL</button>
+    <button id="install" class="install-button" aria-controls="install-help" aria-expanded="false">Установить PWA</button>
   </header>
 
   <div class="scrim" id="scrim" hidden></div>
@@ -32,6 +32,12 @@
       <a href="log.html">Журнал Service Worker</a>
     </nav>
   </aside>
+
+  <section id="install-help" class="install-help" aria-labelledby="install-help-title" hidden>
+    <h2 id="install-help-title">Установка приложения</h2>
+    <p id="install-help-text"></p>
+    <button id="install-help-close" type="button">Закрыть</button>
+  </section>
 
   <main>
     <section class="page" id="home" aria-labelledby="home-title">

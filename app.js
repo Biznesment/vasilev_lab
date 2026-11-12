@@ -1,22 +1,55 @@
 'use strict';
 const $ = (selector) => document.querySelector(selector);
 const installButton = $('#install');
+const installHelp = $('#install-help');
+const installHelpText = $('#install-help-text');
 let installPrompt = null;
+let installed = false;
 const standalone = () => window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+function closeInstallHelp() {
+  installHelp.hidden = true;
+  installButton.setAttribute('aria-expanded', 'false');
+}
+function showInstallHelp() {
+  installHelpText.textContent = window.isSecureContext
+    ? 'Автоматическая установка пока недоступна. В Chrome откройте меню ⋮ и выберите «Установить приложение» или «Добавить на главный экран». Если этого пункта нет, проверьте поддержку установки и попробуйте позже.'
+    : 'Для установки откройте приложение по HTTPS или на localhost. На телефоне адрес компьютера в локальной сети должен использовать HTTPS с доверенным сертификатом.';
+  installHelp.hidden = false;
+  installButton.setAttribute('aria-expanded', 'true');
+}
 window.addEventListener('beforeinstallprompt', (event) => {
   event.preventDefault();
   installPrompt = event;
-  if (!standalone()) installButton.hidden = false;
+  closeInstallHelp();
 });
 installButton.addEventListener('click', async () => {
-  if (!installPrompt) return;
+  if (!installPrompt) { showInstallHelp(); return; }
   const prompt = installPrompt;
   installPrompt = null;
-  installButton.hidden = true;
-  try { await prompt.prompt(); await prompt.userChoice; } catch (error) { console.warn('Installation prompt:', error); }
+  closeInstallHelp();
+  try {
+    await prompt.prompt();
+    await prompt.userChoice;
+  } catch (error) {
+    console.warn('Installation prompt:', error);
+    showInstallHelp();
+  }
 });
-window.addEventListener('appinstalled', () => { installPrompt = null; installButton.hidden = true; showToast('Приложение установлено'); });
-if (standalone()) installButton.hidden = true;
+$('#install-help-close').addEventListener('click', closeInstallHelp);
+window.addEventListener('appinstalled', () => {
+  installed = true;
+  installPrompt = null;
+  installButton.hidden = true;
+  closeInstallHelp();
+  showToast('Приложение установлено');
+});
+const displayMode = window.matchMedia('(display-mode: standalone)');
+function updateInstallButton() {
+  installButton.hidden = installed || standalone();
+  if (installButton.hidden) closeInstallHelp();
+}
+if (displayMode.addEventListener) displayMode.addEventListener('change', updateInstallButton);
+updateInstallButton();
 
 if ('serviceWorker' in navigator) {
   navigator.serviceWorker.register('sw.js').catch((error) => console.error('Service Worker:', error));

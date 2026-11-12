@@ -8,6 +8,8 @@ a { color: #174f9b; }
 .brand { color: #222; font-size: 20px; font-weight: bold; text-decoration: none; }
 .menu-button { font-size: 20px; line-height: 1; }
 .install-button, .back-link { margin-left: auto; }
+.install-help { max-width: 960px; margin: 20px auto 0; padding: 15px; border: 1px solid #aaa; }
+.install-help h2 { margin: 0; font-size: 18px; }
 main { max-width: 1000px; min-height: calc(100vh - 110px); margin: 0 auto; padding: 30px 20px; }
 h1 { font-size: 28px; margin: 0 0 20px; }
 p { line-height: 1.5; }
