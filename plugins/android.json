@@ -1,0 +1,25 @@
+{
+  "prepare_queue": {
+    "installed": [],
+    "uninstalled": []
+  },
+  "config_munge": {
+    "files": {}
+  },
+  "installed_plugins": {
+    "cordova-plugin-device": {
+      "PACKAGE_NAME": "ru.vasilev.lab"
+    },
+    "cordova-plugin-geolocation": {
+      "GPS_REQUIRED": "false",
+      "PACKAGE_NAME": "ru.vasilev.lab"
+    },
+    "cordova-plugin-battery-status": {
+      "PACKAGE_NAME": "ru.vasilev.lab"
+    },
+    "cordova-plugin-network-information": {
+      "PACKAGE_NAME": "ru.vasilev.lab"
+    }
+  },
+  "dependent_plugins": {}
+}
