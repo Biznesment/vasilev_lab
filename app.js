@@ -58,8 +58,7 @@ function route() {
     if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
   });
   if (page === 'emojis' && !emojisRequested) loadEmojis();
-  if (hash === 'gallery') requestAnimationFrame(() => $('#gallery').scrollIntoView());
-  else window.scrollTo(0, 0);
+  window.scrollTo(0, 0);
 }
 window.addEventListener('hashchange', route);
 
@@ -78,21 +77,6 @@ function lazyImage(img, src) {
   img.dataset.src = src;
   img.decoding = 'async';
   if (imageObserver) imageObserver.observe(img); else revealImage(img);
-}
-function renderPhotos() {
-  const grid = $('#photos');
-  (window.PHOTOS || []).forEach((photo, index) => {
-    const article = document.createElement('article'); article.className = 'photo';
-    const frame = document.createElement('div'); frame.className = 'photo-image';
-    const img = document.createElement('img'); img.alt = photo.alt || photo.title || 'Фотография';
-    frame.append(img); lazyImage(img, photo.src);
-    const meta = document.createElement('div'); meta.className = 'photo-meta';
-    const text = document.createElement('div');
-    const title = document.createElement('h3'); title.textContent = photo.title || 'Фотография';
-    const caption = document.createElement('p'); caption.textContent = photo.caption || '';
-    const number = document.createElement('span'); number.textContent = String(index + 1).padStart(2, '0');
-    text.append(title, caption); meta.append(text, number); article.append(frame, meta); grid.append(article);
-  });
 }
 let allEmojis = [], filtered = [], shown = 0;
 const PAGE_SIZE = 72;
@@ -145,4 +129,4 @@ let toastTimer;
 function showToast(message) { const toast = $('#toast'); toast.textContent = message; toast.classList.add('show'); clearTimeout(toastTimer); toastTimer = setTimeout(() => toast.classList.remove('show'), 2500); }
 $('#emoji-search').addEventListener('input', () => { if (allEmojis.length) filterEmojis(); });
 $('#load-more').addEventListener('click', renderMore);
-renderPhotos(); route();
+route();

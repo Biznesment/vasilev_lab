@@ -1,13 +1,11 @@
 'use strict';
-const VERSION = 'v1';
+const VERSION = 'v2';
 const APP_CACHE = `mesto-app-${VERSION}`;
 const API_CACHE = `mesto-api-${VERSION}`;
 const IMAGE_CACHE = `mesto-emoji-images-${VERSION}`;
-// Добавляйте сюда пути своих фотографий из photos.js, чтобы они были доступны до первого просмотра офлайн.
 const APP_ASSETS = [
-  './', 'index.html', 'styles.css', 'app.js', 'photos.js', 'manifest.webmanifest', 'log.html', 'log.js',
-  'assets/icons/icon.svg', 'assets/icons/icon-192.png', 'assets/icons/icon-512.png', 'assets/icons/maskable-512.png',
-  'assets/photos/placeholder-1.svg', 'assets/photos/placeholder-2.svg', 'assets/photos/placeholder-3.svg'
+  './', 'index.html', 'styles.css', 'app.js', 'manifest.webmanifest', 'log.html', 'log.js',
+  'assets/icons/icon.svg', 'assets/icons/icon-192.png', 'assets/icons/icon-512.png', 'assets/icons/maskable-512.png'
 ];
 const DB_NAME = 'mesto-sw-log';
 function openLog() {
