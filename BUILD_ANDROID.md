@@ -4,6 +4,11 @@
 `www/`. Плагины перечислены в `package.json`, поэтому их не нужно добавлять
 вручную.
 
+**Готовый Android-проект уже лежит в репозитории** — папки `platforms/android`
+и `plugins/` закоммичены специально, чтобы можно было склонировать репозиторий,
+открыть `platforms/android` в Android Studio и собрать APK без единой команды
+`npm`.
+
 ## Что нужно
 
 - Node.js 18+ (проверено на Node 22)
@@ -23,16 +28,11 @@ echo $ANDROID_HOME   # путь к Android/Sdk
 
 ## Открыть проект в Android Studio
 
-Android Studio открывает не корень репозитория, а сгенерированную Android-платформу.
-Папка `platforms/` не хранится в git, её нужно создать один раз.
+Android Studio открывает не корень репозитория, а Android-платформу
+`platforms/android`, которая уже присутствует в репозитории.
 
-1. Подготовьте платформу:
-
-   ```bash
-   npm install
-   npm run build
-   npx cordova platform add android
-   ```
+1. Склонируйте репозиторий (или обновите существующий — `git pull`). Отдельно
+   ничего генерировать не нужно: `platforms/android` и `plugins/` уже в git.
 
 2. Запустите Android Studio → **Open** и выберите папку:
 
@@ -84,13 +84,15 @@ npx cordova prepare android
 
 ### Если Gradle Sync ругается на wrapper
 
-Cordova 13 создаёт Gradle wrapper системным Gradle при первой сборке. Если Android
-Studio пишет, что wrapper не найден:
+В репозитории уже лежит `platforms/android/gradle/wrapper/gradle-wrapper.properties`
+с закреплённым **Gradle 8.7**, поэтому Android Studio сама скачает нужную версию.
+В **Settings → Build, Execution, Deployment → Build Tools → Gradle** должно быть:
 
-- установите Gradle 8.7 и выполните `npx cordova build android` (появится
-  `platforms/android/tools/gradlew`), затем **File → Sync Project with Gradle Files**;
-- либо в **Settings → Build Tools → Gradle → Use Gradle from** выберите локальную
-  установку Gradle / встроенный Gradle Android Studio.
+- **Use Gradle from** → `gradle-wrapper.properties file`;
+- **Gradle JDK** → **17**.
+
+Если файлов `gradlew`/`gradlew.bat` нет — это нормально для Cordova: они
+появляются после первой сборки через `npx cordova build android`.
 
 ## Быстрая сборка debug APK
 
@@ -98,13 +100,11 @@ Studio пишет, что wrapper не найден:
 # 1. зависимости
 npm install
 
-# 2. веб-сборка в www/
+# 2. веб-сборка в www/ + копирование в platforms/android
 npm run build
+npx cordova prepare android
 
-# 3. android-платформа (один раз; плагины установятся из package.json)
-npx cordova platform add android
-
-# 4. сборка
+# 3. сборка
 npx cordova build android
 ```
 
@@ -126,10 +126,10 @@ adb install -r platforms/android/app/build/outputs/apk/debug/app-debug.apk
 npm run cordova:android
 ```
 
-Если папка `platforms/android` уже есть, `platform add` повторять не нужно.
-После изменения `config.xml` (например, permissions) выполните
-`npx cordova platform rm android && npx cordova platform add android` или
-`npx cordova prepare android`.
+Платформа уже в репозитории, поэтому `platform add` не нужен. После изменения
+`config.xml` (например, permissions) достаточно `npx cordova prepare android`;
+если правили список плагинов — `npx cordova platform rm android && npx cordova
+platform add android`.
 
 ## Release APK
 
@@ -181,8 +181,8 @@ Workflow:
 
 1. ставит Node.js 20 и JDK 17;
 2. ставит Android SDK 34;
-3. выполняет `npm ci`, `npm run build`, `cordova platform add android`,
-   `cordova build android`;
+3. выполняет `npm ci`, `npm run build`, `cordova prepare android`,
+   `cordova build android` (платформа уже в репозитории);
 4. загружает `app-debug.apk` как артефакт **vasilev-lab-debug-apk**.
 
 ## Частые проблемы

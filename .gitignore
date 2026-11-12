@@ -1,10 +1,19 @@
 # зависимости
 node_modules/
 
-# Cordova: платформы и плагины генерируются заново из config.xml
-platforms/
-plugins/
-!plugins/.gitkeep
+# Cordova: Android-платформа и плагины закоммичены намеренно,
+# чтобы проект открывался и собирался в Android Studio сразу после clone,
+# без npm install и cordova platform add.
+# Остальные платформы (ios и т.п.) генерируются заново из config.xml.
+platforms/*
+!platforms/android/
+
+# сгенерированные Gradle / Android Studio файлы
+platforms/android/build/
+platforms/android/app/build/
+platforms/android/.gradle/
+platforms/android/.idea/
+platforms/android/local.properties
 
 # сборки Android
 *.apk
