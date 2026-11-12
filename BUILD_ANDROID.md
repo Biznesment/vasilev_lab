@@ -190,6 +190,42 @@ Workflow:
 **`JAVA_HOME is not set` / `Unsupported class file major version`** — установлена
 неподходящая Java. Нужна JDK 17, проверьте `java -version` и `JAVA_HOME`.
 
+**`unable to resolve class XmlParser` в `CordovaLib/cordova.gradle`** — Android
+Studio запускает проект на Gradle 9 (Groovy 4), а cordova-android 13 рассчитан на
+**Gradle 8.7** (Groovy 3). В Groovy 4 класс `XmlParser` переехал из `groovy.util` в
+`groovy.xml`, поэтому старый скрипт не компилируется. Это не ошибка кода
+приложения, и патчить `cordova.gradle` не нужно: файл генерируется заново, а
+Gradle 9 всё равно несовместим с AGP 8.3.
+
+Решение — принудительно использовать Gradle 8.7:
+
+1. Скачайте `gradle-8.7-bin.zip` с https://services.gradle.org/distributions/ и
+   распакуйте, например, в `C:\Gradle\gradle-8.7`.
+2. В Android Studio: **Settings → Build, Execution, Deployment → Build Tools →
+   Gradle**:
+   - **Gradle JDK**: 17;
+   - **Use Gradle from / Gradle distribution**: `Specified location` (или
+     `Local installation`) → `C:\Gradle\gradle-8.7`.
+3. **File → Sync Project with Gradle Files**.
+
+Альтернатива без установки Gradle — wrapper 8.7. Создайте файл
+`platforms/android/gradle/wrapper/gradle-wrapper.properties`:
+
+```properties
+distributionBase=GRADLE_USER_HOME
+distributionPath=wrapper/dists
+distributionUrl=https\://services.gradle.org/distributions/gradle-8.7-bin.zip
+zipStoreBase=GRADLE_USER_HOME
+zipStorePath=wrapper/dists
+```
+
+и в настройках Gradle выберите **Use Gradle from → gradle-wrapper.properties
+file**. Android Studio сама скачает Gradle 8.7.
+
+Если нужен только APK, Android Studio можно не настраивать: выполните
+`npx cordova build android` в корне проекта (Cordova создаст wrapper 8.7 в
+`platforms/android/tools` и соберёт APK) либо скачайте артефакт из GitHub Actions.
+
 **`Failed to find target with hash string 'android-34'`** — не установлен
 SDK Platform 34. Установите через SDK Manager или:
 
