@@ -22,6 +22,7 @@ const PATHS = {
     </>
   ),
   left: <path d="M15.5 5 8.5 12l7 7" />,
+  close: <path d="M6.5 6.5l11 11M17.5 6.5l-11 11" />,
   right: <path d="M8.5 5l7 7-7 7" />,
   copy: (
     <>

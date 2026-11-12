@@ -32,15 +32,23 @@ const TITLES = {
   battery: 'Статус батареи',
 };
 
-export function Menu({ current, onSelect, network }) {
+export function Menu({ current, onSelect, onClose, network }) {
   return (
     <div className="menu">
       <div className="menu__header">
         <div className="menu__logo">VL</div>
-        <div>
+        <div className="menu__titles">
           <div className="menu__title">Vasilev Lab</div>
           <div className="menu__subtitle">Cordova · React · Onsen UI</div>
         </div>
+        <button
+          type="button"
+          className="menu__close"
+          aria-label="Закрыть меню"
+          onClick={onClose}
+        >
+          <Icon name="close" size={20} />
+        </button>
       </div>
 
       <div className={`net-pill ${network.online ? 'net-pill--online' : 'net-pill--offline'}`}>
@@ -141,6 +149,7 @@ export default function App() {
         side="left"
         width="272px"
         isOpen={menuOpen}
+        collapse=""
         swipeable={false}
         onPostClose={() => setMenuOpen(false)}
         className="app-menu"
@@ -148,6 +157,7 @@ export default function App() {
         <Menu
           current={page}
           network={network}
+          onClose={() => setMenuOpen(false)}
           onSelect={(nextPage) => {
             setPage(nextPage);
             setMenuOpen(false);
