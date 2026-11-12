@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#ffffff">
+  <meta name="description" content="Личное пространство для фотографий и эмодзи.">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="assets/icons/icon-192.png">
+  <link rel="stylesheet" href="styles.css">
+  <title>Место — ваше маленькое пространство</title>
+  <script src="photos.js" defer></script>
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <header class="topbar">
+    <button class="icon-button menu-toggle" id="menu-open" aria-label="Открыть меню" aria-expanded="false" aria-controls="drawer"><span></span><span></span></button>
+    <a class="brand" href="#home" aria-label="Место, главная"><span class="brand-mark">м<span>.</span></span><span>место<span class="brand-dot">.</span></span></a>
+    <div class="topbar-right"><span class="top-hint">ВАШЕ МАЛЕНЬКОЕ ПРОСТРАНСТВО</span><button class="install-button" id="install" hidden>INSTALL <span>↗</span></button></div>
+  </header>
+
+  <div class="scrim" id="scrim" hidden></div>
+  <aside class="drawer" id="drawer" aria-label="Навигация" aria-hidden="true" inert>
+    <div class="drawer-head"><a class="brand" href="#home"><span class="brand-mark">м<span>.</span></span><span>место<span class="brand-dot">.</span></span></a><button class="icon-button close-button" id="menu-close" aria-label="Закрыть меню">×</button></div>
+    <p class="eyebrow drawer-label">НАВИГАЦИЯ</p>
+    <nav class="drawer-nav" aria-label="Разделы">
+      <a href="#home" data-page="home"><span>01</span> Главная <b>↗</b></a>
+      <a href="#emojis" data-page="emojis"><span>02</span> Эмодзи <b>↗</b></a>
+      <a href="#contacts" data-page="contacts"><span>03</span> Контакты <b>↗</b></a>
+      <a href="log.html"><span>04</span> Журнал SW <b>↗</b></a>
+    </nav>
+    <div class="drawer-bottom"><span class="status-dot"></span> СОЗДАНО ДЛЯ ВАШИХ ИДЕЙ <span>✳</span></div>
+  </aside>
+
+  <main>
+    <section class="page" id="home" aria-labelledby="home-title">
+      <div class="hero">
+        <div class="hero-copy"><p class="eyebrow"><span class="status-dot"></span> РАДЫ ВАС ВИДЕТЬ</p><h1 id="home-title">Всё хорошее<br>начинается <em>здесь.</em></h1><p class="hero-description">Небольшое пространство для того, что вдохновляет. Собирайте любимые моменты и находите нужные эмодзи.</p><a href="#gallery" class="primary-link">Посмотреть коллекцию <span>↘</span></a></div>
+        <div class="hero-art" aria-hidden="true"><div class="art-card"><span class="art-spark">✳</span><span class="art-circle"></span><span class="art-caption">МЕСТО ДЛЯ<br>ВАШИХ ИДЕЙ <span>↗</span></span></div><span class="art-index">01 / 03</span></div>
+      </div>
+      <div class="section-head" id="gallery"><div><p class="eyebrow">ВАША КОЛЛЕКЦИЯ <span class="eyebrow-line"></span> 01</p><h2>Моменты, которые важны<span class="green-dot">.</span></h2></div><p>СОБИРАЙТЕ СВОЁ<br>ВДОХНОВЕНИЕ ЗДЕСЬ ↗</p></div>
+      <div class="photo-grid" id="photos"></div>
+      <div class="home-note"><span>✳</span><p>Сделайте это место своим.<br><small>Добавьте собственные фотографии в проект.</small></p><a href="#contacts" aria-label="Перейти к контактам">↗</a></div>
+    </section>
+
+    <section class="page inner-page" id="emojis" aria-labelledby="emojis-title" hidden>
+      <div class="page-heading"><p class="eyebrow"><span class="status-dot"></span> НЕМНОГО ЭМОЦИЙ</p><h1 id="emojis-title">Скажите это <em>эмодзи.</em></h1><p>Коллекция эмодзи из GitHub. Найдите подходящий и нажмите, чтобы скопировать его название.</p></div>
+      <div class="toolbar"><label class="search"><span aria-hidden="true">⌕</span><input id="emoji-search" type="search" placeholder="Найти эмодзи, например, smile" autocomplete="off" aria-label="Поиск эмодзи"></label><span id="emoji-count" class="result-count" aria-live="polite"></span></div>
+      <p id="emoji-status" class="message" role="status">Загружаем эмодзи…</p><div id="emoji-grid" class="emoji-grid"></div><button id="load-more" class="more-button" hidden>Показать ещё <span>↓</span></button>
+      <p class="source-note">ИСТОЧНИК: <a href="https://api.github.com/emojis" target="_blank" rel="noopener noreferrer">GITHUB REST API ↗</a></p>
+    </section>
+
+    <section class="page inner-page" id="contacts" aria-labelledby="contacts-title" hidden>
+      <div class="page-heading"><p class="eyebrow"><span class="status-dot"></span> НА СВЯЗИ</p><h1 id="contacts-title">Давайте <em>общаться.</em></h1><p>Это пространство можно настроить под себя. Добавьте здесь свои контактные данные.</p></div>
+      <div class="contact-card"><div class="contact-icon">✳</div><div><p class="eyebrow">КОНТАКТЫ</p><h2>Есть идея или вопрос?</h2><p>Замените адрес в файле index.html на свой, чтобы посетители могли с вами связаться.</p><a href="mailto:hello@example.com">hello@example.com ↗</a></div></div>
+    </section>
+  </main>
+  <footer class="footer"><span>© МЕСТО <span class="footer-star">✳</span></span><span>СОЗДАНО ДЛЯ МАЛЕНЬКИХ РАДОСТЕЙ</span><a href="#home">НАВЕРХ ↑</a></footer>
+  <div id="toast" class="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

@@ -1,0 +1,13 @@
+<!doctype html>
+<html lang="ru">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="theme-color" content="#ffffff">
+  <title>Журнал Service Worker — Место</title><link rel="manifest" href="manifest.webmanifest"><link rel="icon" href="assets/icons/icon.svg" type="image/svg+xml"><link rel="stylesheet" href="styles.css"><script src="log.js" defer></script>
+</head>
+<body>
+  <header class="topbar"><a class="brand" href="./"><span class="brand-mark">м<span>.</span></span><span>место<span class="brand-dot">.</span></span></a><div class="topbar-right"><a href="./" class="install-button" style="text-decoration:none">НА ГЛАВНУЮ ↗</a></div></header>
+  <main><section class="inner-page"><div class="page-heading"><p class="eyebrow"><span class="status-dot"></span> СЛУЖЕБНАЯ ИНФОРМАЦИЯ</p><h1>Журнал <em>событий.</em></h1><p>Install, activate, запросы и сохранение ресурсов в кэш. Журнал хранится на этом устройстве, не более 500 записей.</p></div>
+  <div class="toolbar"><button id="refresh" class="more-button" style="margin:0">Обновить ↻</button><button id="clear" class="install-button">ОЧИСТИТЬ ЖУРНАЛ</button></div>
+  <p id="log-status" class="message" role="status">Загрузка журнала…</p><div id="log-list" class="log-list"></div></section></main>
+  <footer class="footer"><span>© МЕСТО <span class="footer-star">✳</span></span><span>ЖУРНАЛ SERVICE WORKER</span><a href="./">НА ГЛАВНУЮ ↗</a></footer>
+</body></html>

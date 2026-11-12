@@ -1,0 +1,12 @@
+{
+  "name": "mesto-pwa",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Небольшое PWA с GitHub Emoji и журналом Service Worker",
+  "scripts": {
+    "start": "node server.js",
+    "https": "node server.js --https",
+    "check": "node --check app.js && node --check sw.js && node --check log.js && node --check server.js"
+  },
+  "engines": { "node": ">=18" }
+}
